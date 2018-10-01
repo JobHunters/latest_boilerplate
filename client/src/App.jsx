@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //RHL only for front end development
 import { Container, Grid } from 'semantic-ui-react';
+import CartList from '../CartList.jsx';
 import { hot } from 'react-hot-loader';
 
 class App extends Component {
