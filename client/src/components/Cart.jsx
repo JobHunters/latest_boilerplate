@@ -1,21 +1,29 @@
-import React from 'react'
-import { Feed } from 'semantic-ui-react'
+import React from 'react';
+import { Feed } from 'semantic-ui-react';
 
-
-function Cart(props){
-  return(
+function Cart({
+  img, name, total, order,
+}) {
+  return (
     <Feed>
       <Feed.Event>
-        <Feed.Label image={props.img} />
+        <Feed.Label image={img} />
         <Feed.Content>
-          <Feed.Date content={props.name} />
+          <Feed.Date content={name} />
           <Feed.Summary>
-            $ {props.total} ({props.order} Productos)
+            $
+            {' '}
+            {total}
+            {' '}
+(
+            {order}
+            {' '}
+Productos)
           </Feed.Summary>
         </Feed.Content>
       </Feed.Event>
     </Feed>
-  )
+  );
 }
 
 export default Cart;

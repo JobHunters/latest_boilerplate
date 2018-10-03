@@ -1,29 +1,23 @@
-import React from 'react'
-import Format from './NumberFormat.jsx'
-import { Card, Statistic, Button } from 'semantic-ui-react'
+import React from 'react';
+import { Card, Statistic, Button } from 'semantic-ui-react';
+import Format from './NumberFormat';
 
-function Order(props) {
-  return(
+function Order({ sum, onClearCart }) {
+  return (
     <Card>
-      <Card.Content header='Cantidad a pagar' />
+      <Card.Content header="Cantidad a pagar" />
       <Card.Content extra>
-        <Statistic size='mini'>
+        <Statistic size="mini">
           <Statistic.Value>
-            <Format number={props.sum}/>
+            <Format number={sum} />
           </Statistic.Value>
         </Statistic>
-        <Button
-          basic
-          color='green'
-          compact
-          size="medium"
-          floated='right'
-          onClick={props.onClearCart}
-          >Pagar
+        <Button basic color="green" compact size="medium" floated="right" onClick={onClearCart}>
+          Pagar
         </Button>
       </Card.Content>
     </Card>
-  )
+  );
 }
 
-export default Order
+export default Order;

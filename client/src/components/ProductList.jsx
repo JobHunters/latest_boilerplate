@@ -1,31 +1,30 @@
-import React from 'react'
-import { Segment, Grid } from 'semantic-ui-react'
-import Product from './Product.jsx'
+import React from 'react';
+import { Segment, Grid } from 'semantic-ui-react';
+import Product from './Product';
 
-
-function ProductList(props) {
+function ProductList({
+  products, onSaveProduct, onIncrementProduct, onRemoveProduct,
+}) {
   return (
     <Segment>
       <Grid>
         <Grid.Row columns={3}>
-          {props.products.map(p => {
-            return (
-              <Grid.Column>
-                <Product
-                  name={p.name}
-                  picture={p.picture}
-                  price={p.price}
-                  onSaveProduct={() => props.onSaveProduct(p.id)}
-                  onIncrementProduct={() => props.onIncrementProduct(p.id)}
-                  onRemoveProduct={() => props.onRemoveProduct(p.id)}
-                />
-              </Grid.Column>
-            )
-          })}
+          {products.map(p => (
+            <Grid.Column>
+              <Product
+                name={p.title}
+                picture={p.iamge}
+                price={p.price}
+                onSaveProduct={() => onSaveProduct(p.id)}
+                onIncrementProduct={() => onIncrementProduct(p.id)}
+                onRemoveProduct={() => onRemoveProduct(p.id)}
+              />
+            </Grid.Column>
+          ))}
         </Grid.Row>
       </Grid>
     </Segment>
-  )
+  );
 }
 
-export default ProductList
+export default ProductList;

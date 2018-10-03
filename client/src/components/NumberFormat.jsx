@@ -1,25 +1,28 @@
-import React from 'react'
+import React from 'react';
 
-function Format(props) {
-
-  function numberFormat(amount, decimals){
+function Format({ number }) {
+  function numberFormat(amount, decimals) {
     decimals = decimals || 0;
 
     if (isNaN(amount) || amount === 0) return parseFloat(0).toFixed(decimals);
-    amount = '' + amount.toFixed(decimals);
+    amount = `${amount.toFixed(decimals)}`;
 
-    var amount_parts = amount.split('.'), regexp = /(\d+)(\d{3})/;
+    const amountParts = amount.split('.');
 
-    while (regexp.test(amount_parts[0]))
-      amount_parts[0] = amount_parts[0].replace(regexp, '$1'  , + '$2');
+    const regexp = /(\d+)(\d{3})/;
 
-    return amount_parts.join('.');
+    while (regexp.test(amountParts[0])) amountParts[0] = amountParts[0].replace(regexp, '$1', +'$2');
+
+    return amountParts.join('.');
   }
 
-    return(
-      <p> $ {numberFormat(props.number)}</p>
-    )
-
+  return (
+    <p>
+      {' '}
+$
+      {numberFormat(number)}
+    </p>
+  );
 }
 
-export default Format
+export default Format;

@@ -1,47 +1,53 @@
-import React from 'react'
-import Format from './NumberFormat.jsx'
-import { Card, Image, Label, Button } from 'semantic-ui-react'
+import React from 'react';
+import {
+  Card, Image, Label, Button,
+} from 'semantic-ui-react';
+import Format from './NumberFormat';
 
-
-function Product(props) {
-  return(
+function Product({
+  picture,
+  name,
+  price,
+  marca,
+  status,
+  onSaveProduct,
+  onIncrementProduct,
+  onRemoveProduct,
+}) {
+  return (
     <Card style={{ marginTop: 15 }}>
-      <Image size="medium" src={props.picture}  />
+      <Image size="medium" src={picture} />
       <Card.Content>
-        <Card.Header style={{fontSize: 15}}>{props.name}</Card.Header>
+        <Card.Header style={{ fontSize: 15 }}>{name}</Card.Header>
         <Card.Meta>
-          <Format number={props.price}/>
+          <Format number={price} />
         </Card.Meta>
         <Card.Description>
-          <Label>{props.marca}</Label>
-          <Label>{props.status} en inventario</Label>
+          <Label>{marca}</Label>
+          <Label>
+            {status}
+            {' '}
+en inventario
+          </Label>
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button
-          basic
-          compact
-          color='blue'
-          floated='right'
-          onClick={props.onSaveProduct}
-        >
+        <Button basic compact color="blue" floated="right" onClick={onSaveProduct}>
           Agregar al carrito
         </Button>
       </Card.Content>
       <Card.Content extra>
-        <Button.Group floated='right'>
-          <Button
-            compact
-            onClick={props.onIncrementProduct}
-            >+</Button>
-          <Button
-            compact
-            onClick={props.onRemoveProduct}
-            >-</Button>
+        <Button.Group floated="right">
+          <Button compact onClick={onIncrementProduct}>
+            +
+          </Button>
+          <Button compact onClick={onRemoveProduct}>
+            -
+          </Button>
         </Button.Group>
       </Card.Content>
     </Card>
-  )
+  );
 }
 
-export default Product
+export default Product;

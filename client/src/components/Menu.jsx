@@ -1,16 +1,11 @@
-import React, { Component } from 'react'
-import { Segment } from 'semantic-ui-react'
-import SearchForm from './SearchForm.jsx'
+import React from 'react';
+import { Segment } from 'semantic-ui-react';
+import SearchForm from './SearchForm';
 
-class Navigation extends Component {
-
-  render() {
-    return(
-      <Segment textAlign='center' clearing style={{ marginTop: 15}}>
-        <SearchForm />
-      </Segment>
-    )
-  }
-}
+const Navigation = () => (
+  <Segment textAlign="center" clearing style={{ marginTop: 15 }}>
+    <SearchForm />
+  </Segment>
+);
 
 export default Navigation;
