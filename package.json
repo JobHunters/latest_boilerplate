@@ -9,8 +9,7 @@
   "scripts": {
     "dev": "webpack --config webpack.config.js --watch --mode development",
     "frontend": "webpack-dev-server --hot --mode development",
-    "start-dev": "nodemon server/index.js",
-    "build": "webpack --config webpack.config.prod.js --mode production"
+    "start-dev": "nodemon server/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
