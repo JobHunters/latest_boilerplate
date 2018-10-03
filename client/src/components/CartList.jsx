@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import Format from '../numberFormat'
 import { Card, Icon, Button } from 'semantic-ui-react'
 
-import Cart from '../Cart.jsx'
+import Cart from './Cart.jsx'
 
 class CartList extends Component {
 

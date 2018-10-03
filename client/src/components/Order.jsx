@@ -1,5 +1,5 @@
 import React from 'react'
-import Format from '../NumberFormat.jsx'
+import Format from './NumberFormat.jsx'
 import { Card, Statistic, Button } from 'semantic-ui-react'
 
 function Order(props) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Segment, Grid } from 'semantic-ui-react'
-import Product from '../Product.jsx'
+import Product from './Product.jsx'
 
 
 function ProductList(props) {

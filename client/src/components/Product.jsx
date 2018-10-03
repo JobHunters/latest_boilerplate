@@ -1,5 +1,5 @@
 import React from 'react'
-import Format from '../numberFormat.jsx'
+import Format from './NumberFormat.jsx'
 import { Card, Image, Label, Button } from 'semantic-ui-react'
 
 
