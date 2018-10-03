@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import Format from '../numberFormat'
 import { Card, Icon, Button } from 'semantic-ui-react';
 
 import Cart from './Cart';
@@ -23,7 +22,7 @@ class CartList extends Component {
   }
 
   render() {
-    const { items, onOpenOrder, total } = this.props;
+    const { items, onOpenOrder, totalItems, productsSum } = this.props;
     return (
       <Card>
         <Card.Content>
@@ -36,13 +35,14 @@ class CartList extends Component {
           {items.map(p => (
             <Cart
               img={p.img}
-              name={p.name}
-              total={this.numberFormat(p.total)}
+              name={p.title}
+              itemTotal={this.numberFormat(p.itemTotal)}
               order={p.order}
             />
           ))}
         </Card.Content>
         <Card.Content extra>
+          <div>{`Total a Pagar ${productsSum}`}</div>
           <Button
             basic
             color="blue"
@@ -50,7 +50,7 @@ class CartList extends Component {
             size="medium"
             onClick={onOpenOrder}
           >
-            Proceder al Pago ({total} productos)
+            Proceder al Pago ({totalItems} productos)
           </Button>
         </Card.Content>
       </Card>

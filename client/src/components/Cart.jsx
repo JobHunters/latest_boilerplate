@@ -1,9 +1,7 @@
 import React from 'react';
 import { Feed } from 'semantic-ui-react';
 
-function Cart({
-  img, name, total, order,
-}) {
+function Cart({ img, name, itemTotal, order }) {
   return (
     <Feed>
       <Feed.Event>
@@ -11,14 +9,7 @@ function Cart({
         <Feed.Content>
           <Feed.Date content={name} />
           <Feed.Summary>
-            $
-            {' '}
-            {total}
-            {' '}
-(
-            {order}
-            {' '}
-Productos)
+            $ {itemTotal} ({order} Productos)
           </Feed.Summary>
         </Feed.Content>
       </Feed.Event>

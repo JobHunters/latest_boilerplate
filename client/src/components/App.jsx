@@ -12,14 +12,15 @@ class App extends Component {
     super(props);
     this.state = {
       openOrder: false,
-      total: 0,
-      sum: 0,
+      totalItems: 0,
+      productsSum: 0,
       products: [],
       cart: [],
     };
 
+    this.sumTotalPrice = this.sumTotalPrice.bind(this);
+    this.sumProductCount = this.sumProductCount.bind(this);
     this.handleSaveProduct = this.handleSaveProduct.bind(this);
-    this.handlerAddProduct = this.handlerAddProduct.bind(this);
     this.handlerRemoveProduct = this.handlerRemoveProduct.bind(this);
     this.handlerOpenOrder = this.handlerOpenOrder.bind(this);
     this.handlerClearCart = this.handlerClearCart.bind(this);
@@ -34,87 +35,83 @@ class App extends Component {
 
   handlerClearCart() {
     this.setState({
+      totalItems: 0,
+      productsSum: 0,
       cart: [],
-      sum: 0,
-      total: 0,
     });
     alert('Compra realizada con éxito');
   }
 
-  sumProducts(array) {
+  sumProductCount(array) {
     let total = 0;
     array.forEach(product => (total += product.order));
-    this.setState({ total });
+    this.setState({ totalItems: total });
   }
 
-  sumTotal(array) {
+  sumTotalPrice(array) {
     let sum = 0;
-    array.forEach(product => (sum += product.total));
-    this.setState({ sum });
-  }
-
-  handlerAddProduct(indexCart, indexProduct) {
-    const statusCopy = Object.assign({}, this.state);
-    if (statusCopy.products[indexProduct].status !== 0) {
-      statusCopy.cart[indexCart].total += statusCopy.cart[indexCart].price;
-      statusCopy.cart[indexCart].order += 1;
-      statusCopy.products[indexProduct].status -= 1;
-      this.setState(statusCopy);
-      this.sumProducts(statusCopy.cart);
-      this.sumTotal(statusCopy.cart);
-    } else {
-      alert('Producto inexistente');
-    }
+    array.forEach(product => (sum += product.itemTotal));
+    this.setState({ productsSum: sum });
   }
 
   handlerRemoveProduct(productId) {
     const { products, cart } = this.state;
-    const product = products.find(p => p.id === productId);
-    const indexProduct = products.findIndex(x => x.id === product.id);
-    const indexCart = cart.findIndex(x => x.id === cart.id);
+    let newCart = cart;
+    const product = products[productId];
+    const existingItem = newCart.find(prod => prod.title === product.title);
+    const itemIdx = newCart.indexOf(existingItem);
 
-    const statusCopy = Object.assign({}, this.state);
-    if (statusCopy.cart[indexCart].total === statusCopy.cart[indexCart].price) {
-      statusCopy.cart.splice(indexCart, 1);
-      this.setState(statusCopy);
-      alert('El producto fue eliminado del carrito de compras');
-    } else {
-      statusCopy.cart[indexCart].total -= statusCopy.cart[indexCart].price;
-      statusCopy.products[indexProduct].status += 1;
-      statusCopy.cart[indexCart].order -= 1;
-      statusCopy.total -= 1;
-      statusCopy.sum -= statusCopy.cart[indexCart].price;
-      this.setState(statusCopy);
+    if (!existingItem) {
+      alert('Producto no en carrito');
     }
+
+    if (existingItem.order > 1) {
+      const existingItemOrder = newCart[itemIdx].order;
+      const newOrder = parseInt(existingItemOrder) - 1;
+      newCart[itemIdx].order = newOrder;
+      newCart[itemIdx].itemTotal = newOrder * parseInt(newCart[itemIdx].price);
+      this.setState({
+        cart: newCart,
+      });
+    } else if (existingItem.order === 1) {
+      newCart.splice(itemIdx, 1);
+      this.setState({
+        cart: newCart,
+      });
+    }
+
+    this.sumProductCount(newCart);
+    this.sumTotalPrice(newCart);
   }
 
   handleSaveProduct(productId) {
     const { products, cart } = this.state;
-    const product = products.find(p => p.id === productId);
-    const indexProduct = products.findIndex(x => x.id === product.id);
+    let newCart = cart;
+    const product = products[productId];
+    const existingItem = newCart.find(prod => prod.title === product.title);
 
     const productCart = {
-      name: product.name,
-      img: product.picture,
+      title: product.title,
+      img: product.image,
       price: product.price,
       order: 1,
-      total: product.price,
+      itemTotal: product.price,
     };
 
-    const filterCart = cart.find(p => p.id === productId);
-    if (undefined !== filterCart && filterCart !== null) {
-      const indexCart = cart.findIndex(x => x.id === filterCart.id);
-      this.handlerAddProduct(indexCart, indexProduct);
+    if (existingItem) {
+      const itemIdx = newCart.indexOf(existingItem);
+      const existingItemOrder = newCart[itemIdx].order;
+      const newOrder = parseInt(existingItemOrder) + 1;
+      newCart[itemIdx].order = newOrder;
+      newCart[itemIdx].itemTotal = newOrder * parseInt(newCart[itemIdx].price);
     } else {
-      const statusCopy = Object.assign({}, this.state);
-      statusCopy.products[indexProduct].status -= 1;
-      this.sumProducts(statusCopy.cart);
-      this.sumTotal(statusCopy.cart);
+      newCart = [...newCart, ...productCart];
       this.setState({
-        cart: this.state.cart.concat([productCart]),
-        statusCopy,
+        cart: newCart,
       });
     }
+    this.sumProductCount(newCart);
+    this.sumTotalPrice(newCart);
   }
 
   handlerOpenOrder(event) {
@@ -124,17 +121,23 @@ class App extends Component {
 
   renderOpenOrder() {
     if (this.state.openOrder) {
-      return <Order sum={this.state.sum} onClearCart={this.handlerClearCart} />;
+      return (
+        <Order
+          productsSum={this.state.productsSum}
+          onClearCart={this.handlerClearCart}
+        />
+      );
     }
   }
 
   render() {
+    const { products, cart, totalItems, productsSum } = this.state;
     return (
       <Container>
         <Grid>
           <Grid.Column md-12="true" width={8}>
             <ProductList
-              products={this.state.products}
+              products={products}
               onSaveProduct={this.handleSaveProduct}
               onIncrementProduct={this.handleSaveProduct}
               onRemoveProduct={this.handlerRemoveProduct}
@@ -142,8 +145,9 @@ class App extends Component {
           </Grid.Column>
           <Grid.Column width={8}>
             <CartList
-              items={this.state.cart}
-              total={this.state.total}
+              items={cart}
+              totalItems={totalItems}
+              productsSum={productsSum}
               onOpenOrder={this.handlerOpenOrder}
             />
             {this.renderOpenOrder()}
